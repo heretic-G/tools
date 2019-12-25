@@ -131,25 +131,30 @@
 
 		function formatFormData (data, sortArr) {
 			let formData = ''
+		  	let decodeFormData = ''
 			for (let i = 0; i< sortArr.length; i++) {
 				let key = sortArr[i]
 				let value = data[sortArr[i]]
 				if (value !== '') {
 					formData += `${key}=${value}&`
+                  	decodeFormData += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`
 				}
 			}
-			return formData
+			return {
+              formData,
+              decodeFormData
+			}
 		}
 
 		function formatParams (data, sortArr, appSecret) {
-			let formData = formatFormData(data, sortArr)
+			let { formData, decodeFormData } = formatFormData(data, sortArr)
 			let hash = md5.create();
 			let hashStr = formData.slice(0,formData.length - 1) + appSecret
 			hash.update(hashStr)
 			let sign = hash.hex()
-			formData += `sign=${sign}`
+          	decodeFormData += `sign=${sign}`
 			return {
-				params: encodeURIComponent(formData),
+				params: decodeFormData,
 				hashStr
 			}
 		}
