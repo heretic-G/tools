@@ -120,7 +120,11 @@
 		function formatFormData (data, sortArr) {
 			let formData = ''
 			for (let i = 0; i< sortArr.length; i++) {
-				formData += `${sortArr[i]}=${data[sortArr[i]]}&`
+				let key = sortArr[i]
+				let value = data[sortArr[i]]
+				if (value !== '') {
+					formData += `${key}=${value}&`
+				}
 			}
 			return formData
 		}
@@ -215,9 +219,9 @@
 		formGroupSubmit.addEventListener('click',function () {
 			let result = getFormItems(formValEl)
 			if (selectVersion.value.indexOf('/v2') > -1) {
-	            result.appId = result['appId/partner']
+	            result.appId = result['appId/partner'] || ''
         	} else {
-    	        result.partner = result['appId/partner']
+    	        result.partner = result['appId/partner'] || ''
 	        }
 			delete result['appId/partner']
 			if (!result.timestamp) {
