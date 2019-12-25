@@ -116,8 +116,12 @@
 		    	let vars = query.split("&");
 		    	for (let i = 0;i < vars.length; i++) {
 		      		let pair = vars[i].split("=");
-                  	let _tempStr = (pair[1] || '').replace(/%/g, '%25');
-		      		params[pair[0]] = decodeURIComponent(_tempStr)
+		      		try {
+                      params[pair[0]] = decodeURIComponent(pair[1] || '')
+					} catch(e) {
+                      let _tempStr = (pair[1] || '').replace(/%/g, '%25');
+                      params[pair[0]] = decodeURIComponent(_tempStr) || ''
+					}
 		    	}
 		    	return params;
 		  	} else {
@@ -131,7 +135,7 @@
 				let key = sortArr[i]
 				let value = data[sortArr[i]]
 				if (value !== '') {
-					formData += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`
+					formData += `${key}=${value}&`
 				}
 			}
 			return formData
@@ -145,7 +149,7 @@
 			let sign = hash.hex()
 			formData += `sign=${sign}`
 			return {
-				params: formData,
+				params: encodeURIComponent(formData),
 				hashStr
 			}
 		}
