@@ -65,9 +65,13 @@
 			<input id="appSecret" type="text">
 		</div>
 	</div>
+	<div style="text-align: center">
+		<button id="clearResult">清除结果</button>
+	</div>
 	<div id='result-url'>
 		
 	</div>
+
 	<script>
 		let dataJson = {
    			'paas-authinfo': {
@@ -112,7 +116,8 @@
 		    	let vars = query.split("&");
 		    	for (let i = 0;i < vars.length; i++) {
 		      		let pair = vars[i].split("=");
-		      		params[pair[0]] = decodeURI(pair[1])
+                  	let _tempStr = (pair[1] || '').replace(/%/g, '%25');
+		      		params[pair[0]] = decodeURIComponent(_tempStr)
 		    	}
 		    	return params;
 		  	} else {
@@ -126,7 +131,7 @@
 				let key = sortArr[i]
 				let value = data[sortArr[i]]
 				if (value !== '') {
-					formData += `${key}=${value}&`
+					formData += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`
 				}
 			}
 			return formData
@@ -199,8 +204,14 @@
 		let appSecret = document.querySelector('#appSecret')
 		let resultUrlCon = document.querySelector('#result-url')
 		let changeFormListEl = document.querySelector('#changeFormList')
+		let clearResult = document.querySelector('#clearResult')
+
+		clearResult.addEventListener('click', function () {
+          resultUrlCon.innerHTML = ''
+        })
 
 		createSelectOptions(changeFormListEl, dataJson)
+
 		let formItems = dataJson[changeFormList.value] && dataJson[changeFormList.value].data
 		if (formItems) {
 			formValEl.innerHTML = ''
