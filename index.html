@@ -30,6 +30,10 @@
 			padding: 0 20px;
 		}
 
+        .result-url_con span {
+            margin-right: 30px;
+        }
+
 		.result-url_con p {
 			margin: 0;	
 		}
@@ -164,6 +168,7 @@
 		function appendResultInfo (resultUrlCon, allUrl, hashStr) {
 			let showInfoEl = document.createElement('div')
 			let pEl = document.createElement('p')
+            let spanEl = document.createElement('span')
 			let aEl = document.createElement('a')
 			showInfoEl.className = 'result-url_con'
 
@@ -171,10 +176,13 @@
 
 			aEl.target= '_blank'
 			aEl.href = allUrl
-			aEl.innerText = allUrl
+			aEl.innerText = '跳转'
+
+            spanEl.innerText = allUrl
 			
 			showInfoEl.appendChild(pEl)
-			showInfoEl.appendChild(aEl)
+            showInfoEl.appendChild(spanEl)
+            showInfoEl.appendChild(aEl)
 			resultUrlCon.insertBefore(showInfoEl,resultUrlCon.children[0])
 		}
 
