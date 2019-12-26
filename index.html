@@ -1,297 +1,303 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<link rel="icon shortcut" type="image/ico" href="./favicon.png">
-	<link rel="icon" sizes="192x192" href="./favicon.png">
-	<link rel="apple-touch-icon" href="./favicon.png">
-	<title>Tools</title>
-	<style>
-		body,html {
-			margin: 0;
-		}
-		.form-group_con-50 {
-			display: inline-block;
-			width: 45%;
-			vertical-align: top;
-		}
+    <meta charset="UTF-8">
+    <link rel="icon shortcut" type="image/ico" href="./favicon.png">
+    <link rel="icon" sizes="192x192" href="./favicon.png">
+    <link rel="apple-touch-icon" href="./favicon.png">
+    <title>Tools</title>
+    <style>
+        body, html {
+            margin: 0;
+        }
 
-		input {
-			width: 150px;
-		}
+        .form-group_con-50 {
+            display: inline-block;
+            width: 45%;
+            vertical-align: top;
+        }
 
-		textarea {
-			width: 300px;
-		}
+        input {
+            width: 150px;
+        }
 
-		.result-url_con {
-			word-break: break-all;
-			margin-bottom: 20px;
-			padding: 0 20px;
-		}
+        textarea {
+            width: 300px;
+        }
+
+        .result-url_con {
+            word-break: break-all;
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
 
         .result-url_con span {
             margin-right: 30px;
         }
 
-		.result-url_con p {
-			margin: 0;	
-		}
-	</style>
-	<script src="https://cdn.jsdelivr.net/gh/emn178/js-md5/build/md5.min.js"></script>
+        .result-url_con p {
+            margin: 0;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/gh/emn178/js-md5/build/md5.min.js"></script>
 </head>
 <body>
-	<div class="form-group_con-50">
-		<div class="form-group_con"></div>
-		<div style="text-align: center;margin-top: 30px">
-			<button id='form-group-submit'>计算</button>
-		</div>
-	</div>
-	<div class="form-group_con-50">
-		<span style="vertical-align: top">url:</span>
-		<textarea rows="5" id='url-value'></textarea>
-		<div style="text-align: center;margin-top: 30px">
-			<button id="url-submit">计算</button>
-		</div>
-	</div>
-	<div style="text-align: center">
-		<select id="select-version">
-			<option value="https://api_dev.duobeiyun.com">https://api_dev.duobeiyun.com</option>
-			<option value="https://api_dev.duobeiyun.com/p/v2">https://api_dev.duobeiyun.com/p/v2</option>
-			<option value="https://api.duobeiyun.net/p/v2">paas apiV2</option>
-        	<option value="https://api.duobeiyun.net/p/v1">paas apiV1</option>
-        	<option value="https://api.duobeiyun.net">saas api</option>
-		</select>
-		<div>
-			<select name="" id="changeFormList">
-			</select>
-		</div>
-		<div>
-			<span>appSecret:</span>
-			<input id="appSecret" type="text">
-		</div>
-	</div>
-	<div style="text-align: center">
-		<button id="clearResult">清除结果</button>
-	</div>
-	<div id='result-url'>
-		
-	</div>
+<div class="form-group_con-50">
+    <div class="form-group_con"></div>
+    <div style="text-align: center;margin-top: 30px">
+        <button id='form-group-submit'>计算</button>
+    </div>
+</div>
+<div class="form-group_con-50">
+    <span style="vertical-align: top">url:</span>
+    <textarea rows="5" id='url-value'></textarea>
+    <div style="text-align: center;margin-top: 30px">
+        <button id="url-submit">计算</button>
+    </div>
+</div>
+<div style="text-align: center">
+    <select id="select-version">
+        <option value="https://api_dev.duobeiyun.com">https://api_dev.duobeiyun.com</option>
+        <option value="https://api_dev.duobeiyun.com/p/v2">https://api_dev.duobeiyun.com/p/v2</option>
+        <option value="https://api.duobeiyun.net/p/v2">paas apiV2</option>
+        <option value="https://api.duobeiyun.net/p/v1">paas apiV1</option>
+        <option value="https://api.duobeiyun.net">saas api</option>
+    </select>
+    <div>
+        <select name="" id="changeFormList">
+        </select>
+    </div>
+    <div>
+        <span>appSecret:</span>
+        <input id="appSecret" type="text">
+    </div>
+</div>
+<div style="text-align: center">
+    <button id="clearResult">清除结果</button>
+</div>
+<div id='result-url'>
 
-	<script>
-		let dataJson = {
-   			'paas-authinfo': {
-    			label: 'paas authinfo的配置',
-    			url: '/channel/authinfo',
-    			data: {
-					'appId/partner': '',
-					'timestamp': '',
-					'uid': '',
-					'nickname': '',
-					'channelId': ''
-    			}
-   			},
-   			'saas-authinfo': {
-				label: 'saas authinfo的配置',
-				url: '/api/v3/room/authinfo',
-				data: {
-					'partner': '',
-					'timestamp': '',
-					'uid': '',
-					'nickname': '',
-					'roomId': ''
-				}
-   			}
-  		}
+</div>
 
-		function createFormGroupItem (key = '', value = '' ) {
-			let formGroupDiv = document.createElement("div");
-			formGroupDiv.id = `form-group-${ allGroup++ }`
-			formGroupDiv.innerHTML = `<span>key: </span><input ${key ? 'disabled="disabled"' : ''} class="form-key" type="text" value="${key}"><span> value: </span><input class="form-value" type="text" value="${value}">`
-			return formGroupDiv
-		}
+<script>
+  let dataJson = {
+    'paas-authinfo': {
+      label: 'paas authinfo的配置',
+      url: '/channel/authinfo',
+      data: {
+        'appId/partner': '',
+        'timestamp': '',
+        'uid': '',
+        'nickname': '',
+        'channelId': ''
+      }
+    },
+    'saas-authinfo': {
+      label: 'saas authinfo的配置',
+      url: '/api/v3/room/authinfo',
+      data: {
+        'partner': '',
+        'timestamp': '',
+        'uid': '',
+        'nickname': '',
+        'roomId': ''
+      }
+    }
+  }
 
-		function getAllQueryParams (params = {}, url = '') {
-			let query = url;
-			if (url.indexOf('?') > -1) {
-				params._oldUrl = query.slice(0, url.indexOf('?'))
-				query = query.slice(url.indexOf('?') + 1)
-			}
+  function createFormGroupItem(key = '', value = '') {
+    let formGroupDiv = document.createElement("div");
+    formGroupDiv.id = `form-group-${ allGroup++ }`
+    formGroupDiv.innerHTML = `<span>key: </span><input ${key ? 'disabled="disabled"' : ''} class="form-key" type="text" value="${key}"><span> value: </span><input class="form-value" type="text" value="${value}">`
+    return formGroupDiv
+  }
 
-		  	if (query) {
-		    	let vars = query.split("&");
-		    	for (let i = 0;i < vars.length; i++) {
-		      		let pair = vars[i].split("=");
-		      		try {
-                      params[pair[0]] = decodeURIComponent(pair[1] || '')
-					} catch(e) {
-                      let _tempStr = (pair[1] || '').replace(/%/g, '%25');
-                      params[pair[0]] = decodeURIComponent(_tempStr) || ''
-					}
-		    	}
-		    	return params;
-		  	} else {
-		    	return params;
-		  	}
-		}
+  function getAllQueryParams(params = {}, url = '') {
+    let query = url;
+    if (url.indexOf('?') > -1) {
+      params._oldUrl = query.slice(0, url.indexOf('?'))
+      query = query.slice(url.indexOf('?') + 1)
+    }
 
-		function formatFormData (data, sortArr) {
-			let formData = ''
-		  	let decodeFormData = ''
-			for (let i = 0; i< sortArr.length; i++) {
-				let key = sortArr[i]
-				let value = data[sortArr[i]]
-				if (value !== '') {
-					formData += `${key}=${value}&`
-                  	decodeFormData += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`
-				}
-			}
-			return {
-              formData,
-              decodeFormData
-			}
-		}
+    if (query) {
+      let vars = query.split("&");
+      for (let i = 0; i < vars.length; i++) {
+        let pair = vars[i].split("=");
+        try {
+          params[pair[0]] = decodeURIComponent(pair[1] || '')
+        } catch (e) {
+          let _tempStr = (pair[1] || '').replace(/%/g, '%25');
+          params[pair[0]] = decodeURIComponent(_tempStr) || ''
+        }
+      }
+      return params;
+    } else {
+      return params;
+    }
+  }
 
-		function formatParams (data, sortArr, appSecret) {
-			let { formData, decodeFormData } = formatFormData(data, sortArr)
-			let hash = md5.create();
-			let hashStr = formData.slice(0,formData.length - 1) + appSecret
-			hash.update(hashStr)
-			let sign = hash.hex()
-          	decodeFormData += `sign=${sign}`
-			return {
-				params: decodeFormData,
-				hashStr
-			}
-		}
+  function formatFormData(data, sortArr) {
+    let formData = ''
+    let decodeFormData = ''
+    for (let i = 0; i < sortArr.length; i++) {
+      let key = sortArr[i]
+      let value = data[sortArr[i]]
+      if (value !== '') {
+        formData += `${key}=${value}&`
+        decodeFormData += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`
+      }
+    }
+    return {
+      formData,
+      decodeFormData
+    }
+  }
 
-		function appendResultInfo (resultUrlCon, allUrl, hashStr) {
-			let showInfoEl = document.createElement('div')
-			let pEl = document.createElement('p')
-            let spanEl = document.createElement('span')
-			let aEl = document.createElement('a')
-			showInfoEl.className = 'result-url_con'
+  function formatParams(data, sortArr, appSecret) {
+    let {formData, decodeFormData} = formatFormData(data, sortArr)
+    let hash = md5.create();
+    let hashStr = formData.slice(0, formData.length - 1) + appSecret
+    hash.update(hashStr)
+    let sign = hash.hex()
+    decodeFormData += `sign=${sign}`
+    return {
+      params: decodeFormData,
+      hashStr
+    }
+  }
 
-			pEl.innerText = hashStr
+  function appendResultInfo(resultUrlCon, allUrl, hashStr) {
+    let showInfoEl = document.createElement('div')
+    let pEl = document.createElement('p')
+    let spanEl = document.createElement('span')
+    let aEl = document.createElement('a')
+    showInfoEl.className = 'result-url_con'
 
-			aEl.target= '_blank'
-			aEl.href = allUrl
-			aEl.innerText = '跳转'
+    pEl.innerText = hashStr
 
-            spanEl.innerText = allUrl
-			
-			showInfoEl.appendChild(pEl)
-            showInfoEl.appendChild(spanEl)
-            showInfoEl.appendChild(aEl)
-			resultUrlCon.insertBefore(showInfoEl,resultUrlCon.children[0])
-		}
+    aEl.target = '_blank'
+    aEl.href = allUrl
+    aEl.innerText = '跳转'
 
-		function createSelectOptions (parentEl, json) {
-			let list = Object.keys(json)
-			if (list.length > 0) {
-				for (let i = 0;i < list.length; i++) {
-					let option = document.createElement('option')
-					option.value = list[i]
-					option.innerText = dataJson[list[i]].label
-					parentEl.appendChild(option)
-				}
-			}
-		}
+    spanEl.innerText = allUrl
 
-		function getFormItems (formValEl) {
-			let list = formValEl.children
-			let result = {}
-			if (list.length > 0) {
-				for(let i = 0; i< list.length; i++ ) {
-					let keyEl = list[i].querySelector('.form-key')
-					let valueEl = list[i].querySelector('.form-value')
-					if (keyEl.value) {
-						result[keyEl.value] = (valueEl.value || '').trim()
-					}
-				}
-			}
-			return result
-		}
+    showInfoEl.appendChild(pEl)
+    showInfoEl.appendChild(spanEl)
+    showInfoEl.appendChild(aEl)
+    resultUrlCon.insertBefore(showInfoEl, resultUrlCon.children[0])
+  }
+
+  function createSelectOptions(parentEl, json) {
+    let list = Object.keys(json)
+    if (list.length > 0) {
+      for (let i = 0; i < list.length; i++) {
+        let option = document.createElement('option')
+        option.value = list[i]
+        option.innerText = dataJson[list[i]].label
+        parentEl.appendChild(option)
+      }
+    }
+  }
+
+  function getFormItems(formValEl) {
+    let list = formValEl.children
+    let result = {}
+    if (list.length > 0) {
+      for (let i = 0; i < list.length; i++) {
+
+        let keyEl = list[i].querySelector('.form-key')
+        let valueEl = list[i].querySelector('.form-value')
+        if (keyEl.value) {
+          result[keyEl.value] = (valueEl.value || '').trim()
+        }
+      }
+    }
+    return result
+  }
 
 
-		let allGroup = 3;
-		let formValEl = document.querySelector('.form-group_con')
-		let formGroupSubmit = document.querySelector('#form-group-submit')
-		let urlSubmit = document.querySelector('#url-submit')
-		let urlValEl = document.querySelector('#url-value')
-		let selectVersion = document.querySelector('#select-version')
-		let appSecret = document.querySelector('#appSecret')
-		let resultUrlCon = document.querySelector('#result-url')
-		let changeFormListEl = document.querySelector('#changeFormList')
-		let clearResult = document.querySelector('#clearResult')
+  let allGroup = 3;
+  let formValEl = document.querySelector('.form-group_con')
+  let formGroupSubmit = document.querySelector('#form-group-submit')
+  let urlSubmit = document.querySelector('#url-submit')
+  let urlValEl = document.querySelector('#url-value')
+  let selectVersion = document.querySelector('#select-version')
+  let appSecret = document.querySelector('#appSecret')
+  let resultUrlCon = document.querySelector('#result-url')
+  let changeFormListEl = document.querySelector('#changeFormList')
+  let clearResult = document.querySelector('#clearResult')
 
-		clearResult.addEventListener('click', function () {
-          resultUrlCon.innerHTML = ''
-        })
+  clearResult.addEventListener('click', function () {
+    resultUrlCon.innerHTML = ''
+  })
 
-		createSelectOptions(changeFormListEl, dataJson)
+  createSelectOptions(changeFormListEl, dataJson)
 
-		let formItems = dataJson[changeFormList.value] && dataJson[changeFormList.value].data
-		if (formItems) {
-			formValEl.innerHTML = ''
-			for (let key in formItems) {
-				formValEl.appendChild(createFormGroupItem(key, formItems[key]))
-			}
-		}
+  let formItems = dataJson[changeFormList.value] && dataJson[changeFormList.value].data
+  if (formItems) {
+    formValEl.innerHTML = ''
+    for (let key in formItems) {
+      formValEl.appendChild(createFormGroupItem(key, formItems[key]))
+    }
+  }
 
-		changeFormListEl.addEventListener('change', function (e) {
-			let formItems = dataJson[changeFormList.value] && dataJson[changeFormList.value].data
-			if (formItems) {
-				formValEl.innerHTML = ''
-				for (let key in formItems) {
-					formValEl.appendChild(createFormGroupItem(key, formItems[key]))
-				}
-			}
-		})
+  changeFormListEl.addEventListener('change', function (e) {
+    let formItems = dataJson[changeFormList.value] && dataJson[changeFormList.value].data
+    if (formItems) {
+      formValEl.innerHTML = ''
+      for (let key in formItems) {
+        formValEl.appendChild(createFormGroupItem(key, formItems[key]))
+      }
+    }
+  })
 
-		formGroupSubmit.addEventListener('click',function () {
-			let result = getFormItems(formValEl)
-			if (selectVersion.value.indexOf('/v2') > -1) {
-	            result.appId = result['appId/partner'] || ''
-        	} else {
-    	        result.partner = result['appId/partner'] || ''
-	        }
-			delete result['appId/partner']
-			if (!result.timestamp) {
-				result.timestamp = Date.now()
-			}
+  formGroupSubmit.addEventListener('click', function () {
+    let result = getFormItems(formValEl)
+    if (selectVersion.value.indexOf('/v2') > -1) {
+      if (result['appId/partner']) {
+        result.appId = result['appId/partner']
+      }
+    } else {
+      if (result['appId/partner']) {
+        result.partner = result['appId/partner']
+      }
+    }
+    delete result['appId/partner']
+    if (!result.timestamp) {
+      result.timestamp = Date.now()
+    }
 
-			let keys = Object.keys(result)
-			keys.sort()			
-			let { params, hashStr } =  formatParams(result, keys, (appSecret.value || '').trim())
-			let allUrl = `${selectVersion.value + (dataJson[changeFormList.value].url || '')}?${params}`
-			appendResultInfo(resultUrlCon, allUrl, hashStr)
-			
-		})
+    let keys = Object.keys(result)
+    keys.sort()
+    let {params, hashStr} = formatParams(result, keys, (appSecret.value || '').trim())
+    let allUrl = `${selectVersion.value + (dataJson[changeFormList.value].url || '')}?${params}`
+    appendResultInfo(resultUrlCon, allUrl, hashStr)
 
-		urlSubmit.addEventListener('click',function () {
-			let urlVal = (urlValEl.value || '').trim()
-			let {_oldUrl, ...result} = getAllQueryParams({}, urlVal)
-			if (result.sign) {
-				delete result.sign
-			}
-			let keys = Object.keys(result)
-			keys.sort()			
-			let { params, hashStr } =  formatParams(result, keys, (appSecret.value || '').trim())
-			let allUrl = `${_oldUrl || (selectVersion.value + (dataJson[changeFormList.value].url || ''))}?${params}`
-			appendResultInfo(resultUrlCon, allUrl, hashStr)
-		})
+  })
 
-		formValEl.onkeydown = function (e) {
-			var theEvent = e || window.event;
-            var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
-            // 13 代表 回车键
-            if (code == 13 && e.target.className === 'form-value') {
-                // 要执行的函数 或者点击事件
-				let formGroupCon = document.querySelector('.form-group_con')
-				formGroupCon.appendChild(createFormGroupItem())
-            }
-		}
-	</script>
+  urlSubmit.addEventListener('click', function () {
+    let urlVal = (urlValEl.value || '').trim()
+    let {_oldUrl, ...result} = getAllQueryParams({}, urlVal)
+    if (result.sign) {
+      delete result.sign
+    }
+    let keys = Object.keys(result)
+    keys.sort()
+    let {params, hashStr} = formatParams(result, keys, (appSecret.value || '').trim())
+    let allUrl = `${_oldUrl || (selectVersion.value + (dataJson[changeFormList.value].url || ''))}?${params}`
+    appendResultInfo(resultUrlCon, allUrl, hashStr)
+  })
+
+  formValEl.onkeydown = function (e) {
+    var theEvent = e || window.event;
+    var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+    // 13 代表 回车键
+    if (code == 13 && e.target.className === 'form-value') {
+      // 要执行的函数 或者点击事件
+      let formGroupCon = document.querySelector('.form-group_con')
+      formGroupCon.appendChild(createFormGroupItem())
+    }
+  }
+</script>
 </body>
 </html>
