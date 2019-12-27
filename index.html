@@ -79,32 +79,8 @@
 
 </div>
 
+<script src="data.js"></script>
 <script>
-  let dataJson = {
-    'paas-authinfo': {
-      label: 'paas authinfo的配置',
-      url: '/channel/authinfo',
-      data: {
-        'appId/partner': '',
-        'timestamp': '',
-        'uid': '',
-        'nickname': '',
-        'channelId': ''
-      }
-    },
-    'saas-authinfo': {
-      label: 'saas authinfo的配置',
-      url: '/api/v3/room/authinfo',
-      data: {
-        'partner': '',
-        'timestamp': '',
-        'uid': '',
-        'nickname': '',
-        'roomId': ''
-      }
-    }
-  }
-
   function createFormGroupItem(key = '', value = '') {
     let formGroupDiv = document.createElement("div");
     formGroupDiv.id = `form-group-${ allGroup++ }`
