@@ -60,8 +60,8 @@ window.dataJson = {
       'roomId': ''
     }
   },
-  'saas-创建课程': {
-    label: 'saas-创建课程',
+  'saas-v3-创建课程': {
+    label: 'saas-v3-创建课程',
     url: '/api/v3/room/create',
     data: {
       'partner': '',
@@ -70,6 +70,20 @@ window.dataJson = {
       'roomType': '',
       'startTime': '',
       'duration': '',
+      'clientType': 0
+    }
+  },
+  'saas-v4-创建课程': {
+    label: 'saas-v4-创建课程',
+    url: '/api/v4/room/create',
+    data: {
+      'partner': '',
+      'timestamp': '',
+      'title': '',
+      'roomType': '',
+      'startTime': '',
+      'duration': '',
+      'video': 1,
       'clientType': 0
     }
   },
@@ -83,7 +97,7 @@ window.dataJson = {
     }
   },
   'saas-直播用户统计': {
-    label: 'saas-直播教室统计',
+    label: 'saas-直播用户统计',
     url: '/api/v3/statistics/zhibo/user',
     data: {
       'partner': '',
