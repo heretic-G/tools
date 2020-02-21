@@ -106,4 +106,23 @@ window.dataJson = {
       'uid': ''
     }
   },
+  'saas-回放教室统计': {
+    label: 'saas-回放教室统计',
+    url: '/api/v3/statistics/statistics/room',
+    data: {
+      'partner': '',
+      'timestamp': '',
+      'roomId': ''
+    }
+  },
+  'saas-回放用户统计': {
+    label: 'saas-回放用户统计',
+    url: '/api/v3/statistics/playback/user',
+    data: {
+      'partner': '',
+      'timestamp': '',
+      'roomId': '',
+      'uid': ''
+    }
+  },
 }
