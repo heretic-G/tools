@@ -1,76 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon shortcut" type="image/ico" href="./favicon.png">
-    <link rel="icon" sizes="192x192" href="./favicon.png">
-    <link rel="apple-touch-icon" href="./favicon.png">
-    <title>Tools</title>
-    <style>
-        body, html {
-            margin: 0;
-        }
+  <meta charset="UTF-8">
+  <link rel="icon shortcut" type="image/ico" href="./favicon.png">
+  <link rel="icon" sizes="192x192" href="./favicon.png">
+  <link rel="apple-touch-icon" href="./favicon.png">
+  <title>Tools</title>
+  <style>
+    body, html {
+      margin: 0;
+    }
 
-        .form-group_con-50 {
-            display: inline-block;
-            width: 45%;
-            vertical-align: top;
-        }
+    .form-group_con-50 {
+      display: inline-block;
+      width: 45%;
+      vertical-align: top;
+    }
 
-        input {
-            width: 150px;
-        }
+    input {
+      width: 150px;
+    }
 
-        textarea {
-            width: 300px;
-        }
+    textarea {
+      width: 300px;
+    }
 
-        .result-url_con {
-            word-break: break-all;
-            margin-bottom: 20px;
-            padding: 0 20px;
-        }
+    .result-url_con {
+      word-break: break-all;
+      margin-bottom: 20px;
+      padding: 0 20px;
+    }
 
-        .result-url_con span {
-            margin-right: 30px;
-        }
+    .result-url_con span {
+      margin-right: 30px;
+    }
 
-        .result-url_con p {
-            margin: 0;
-        }
+    .result-url_con p {
+      margin: 0;
+    }
+    .chang-form-search_con {
+      position: relative;
+      width: 200px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .chang-form-search_body {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 23px;
+      width: 100%;
+      background-color: #fff;
+      border-bottom: 1px solid #f2f2f5;
+    }
+
+    .chang-form-search_body div {
+      height: 24px;
+      line-height: 24px;
+      border: 1px solid #f3f3f5;
+      padding: 0 10px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .chang-form-search_body div:hover {
+      background-color: #f3f3f5;
+    }
+
+    .change-form-list_con {
+      height: 0;
+      width: 0;
+      overflow: hidden;
+      visibility: hidden;
+    }
     </style>
     <script src="https://cdn.jsdelivr.net/gh/emn178/js-md5/build/md5.min.js"></script>
 </head>
 <body>
 <div class="form-group_con-50">
-    <div class="form-group_con"></div>
-    <div style="text-align: center;margin-top: 30px">
-        <button id='form-group-submit'>计算</button>
-    </div>
+  <div class="form-group_con"></div>
+  <div style="text-align: center;margin-top: 30px">
+    <button id='form-group-submit'>计算</button>
+  </div>
 </div>
 <div class="form-group_con-50">
-    <span style="vertical-align: top">url:</span>
-    <textarea rows="5" id='url-value'></textarea>
-    <div style="text-align: center;margin-top: 30px">
-        <button id="url-submit">计算</button>
-    </div>
+  <span style="vertical-align: top">url:</span>
+  <textarea rows="5" id='url-value'></textarea>
+  <div style="text-align: center;margin-top: 30px">
+    <button id="url-submit">计算</button>
+  </div>
 </div>
 <div style="text-align: center">
-    <select id="select-version">
-        <option value="https://api_dev.duobeiyun.com">https://api_dev.duobeiyun.com</option>
-        <option value="https://api_dev.duobeiyun.com/p/v2">https://api_dev.duobeiyun.com/p/v2</option>
-        <option value="https://api.duobeiyun.net/p/v2">paas apiV2</option>
-        <option value="https://api.duobeiyun.net/p/v1">paas apiV1</option>
-        <option value="https://api.duobeiyun.net">saas api</option>
-    </select>
-    <div>
-        <select name="" id="changeFormList">
-        </select>
-    </div>
-    <div>
-        <span>appSecret:</span>
-        <input id="appSecret" type="text">
-    </div>
+  <select id="select-version">
+    <option value="https://api_dev.duobeiyun.com">https://api_dev.duobeiyun.com</option>
+    <option value="https://api_dev.duobeiyun.com/p/v2">https://api_dev.duobeiyun.com/p/v2</option>
+    <option value="https://api.duobeiyun.net/p/v2">paas apiV2</option>
+    <option value="https://api.duobeiyun.net/p/v1">paas apiV1</option>
+    <option value="https://api.duobeiyun.net">saas api</option>
+  </select>
+  <div class='change-form-list_con'>
+    <select name="" id="changeFormList"></select>
+  </div>
+  <div class="chang-form-search_con">
+    <input type="text" id="changeFormSearch"/>
+    <div class="chang-form-search_body"></div>
+  </div>
+  <div>
+    <span>appSecret:</span>
+    <input id="appSecret" type="text">
+  </div>
 </div>
 <div style="text-align: center">
     <button id="clearResult">清除结果</button>
@@ -81,6 +121,7 @@
 
 <script src="data.js"></script>
 <script>
+  let searchList = []
   function createFormGroupItem(key = '', value = '') {
     let formGroupDiv = document.createElement("div");
     formGroupDiv.id = `form-group-${ allGroup++ }`
@@ -168,6 +209,10 @@
     if (list.length > 0) {
       for (let i = 0; i < list.length; i++) {
         let option = document.createElement('option')
+        searchList.push({
+          label: dataJson[list[i]].label,
+          key: list[i]
+        })
         option.value = list[i]
         option.innerText = dataJson[list[i]].label
         parentEl.appendChild(option)
@@ -180,7 +225,6 @@
     let result = {}
     if (list.length > 0) {
       for (let i = 0; i < list.length; i++) {
-
         let keyEl = list[i].querySelector('.form-key')
         let valueEl = list[i].querySelector('.form-value')
         if (keyEl.value) {
@@ -202,6 +246,67 @@
   let resultUrlCon = document.querySelector('#result-url')
   let changeFormListEl = document.querySelector('#changeFormList')
   let clearResult = document.querySelector('#clearResult')
+  let searchBody = document.querySelector('.chang-form-search_body')
+  let changeFormSearch = document.querySelector('#changeFormSearch')
+
+  changeFormSearch.addEventListener('blur', function () {
+    setTimeout(() => {
+      let filterArr = searchList.filter(curr => {
+        return curr.label === changeFormSearch.value
+      })
+      if (filterArr.length === 0) {
+        changeFormSearch.value = dataJson[changeFormList.value].label
+        let item = document.createElement('div')
+        item.setAttribute('data-select-value', changeFormList.value)
+        item.setAttribute("class", 'chang-form-search-item');
+        item.innerText = dataJson[changeFormList.value].label
+        searchBody.appendChild(item)
+      }
+      searchBody.style.display = 'none'
+    }, 100)
+  })
+
+  changeFormSearch.addEventListener('focus', function () {
+    searchBody.style.display = 'block'
+  })
+
+
+  changeFormSearch.addEventListener('input',function (e) {
+    let val = (changeFormSearch.value || '').trim()
+    let filterArr
+    if (val === '') {
+      filterArr = searchList
+    } else {
+      filterArr = searchList.filter(curr => {
+        return curr.label.indexOf(val) > -1
+      })
+    }
+    searchBody.innerHTML = ''
+    filterArr.forEach(curr => {
+      let item = document.createElement('div')
+      item.setAttribute('data-select-value', curr.key)
+      item.setAttribute("class", 'chang-form-search-item');
+      item.innerText = curr.label
+      searchBody.appendChild(item)
+    })
+  })
+
+  searchBody.addEventListener('click', function (e) {
+    let el = e.target
+    if (el.className === 'chang-form-search-item') {
+      let val = el.getAttribute('data-select-value')
+      let label = el.innerText
+      changeFormListEl.value = val
+      changeFormSearch.value = label
+      searchBody.innerHTML = ''
+      let item = document.createElement('div')
+      item.setAttribute('data-select-value', val)
+      item.setAttribute("class", 'chang-form-search-item');
+      item.innerText = label
+      searchBody.appendChild(item)
+      changeFormListElChange()
+    }
+  })
 
   clearResult.addEventListener('click', function () {
     resultUrlCon.innerHTML = ''
@@ -216,8 +321,14 @@
       formValEl.appendChild(createFormGroupItem(key, formItems[key]))
     }
   }
+  changeFormSearch.value = dataJson[changeFormList.value].label
+  let item = document.createElement('div')
+  item.setAttribute('data-select-value', changeFormList.value)
+  item.setAttribute("class", 'chang-form-search-item');
+  item.innerText = dataJson[changeFormList.value].label
+  searchBody.appendChild(item)
 
-  changeFormListEl.addEventListener('change', function (e) {
+  function changeFormListElChange () {
     let formItems = dataJson[changeFormList.value] && dataJson[changeFormList.value].data
     if (formItems) {
       formValEl.innerHTML = ''
@@ -225,7 +336,9 @@
         formValEl.appendChild(createFormGroupItem(key, formItems[key]))
       }
     }
-  })
+  }
+
+  changeFormListEl.addEventListener('change', changeFormListElChange)
 
   formGroupSubmit.addEventListener('click', function () {
     let result = getFormItems(formValEl)
