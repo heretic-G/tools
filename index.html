@@ -111,6 +111,14 @@
     <span>appSecret:</span>
     <input id="appSecret" type="text">
   </div>
+  <div>
+    <span>appId/partner:</span>
+    <input id="appIdPartner" type="text">
+  </div>
+  <div>
+    <span>timestamp</span>
+    <input id="timestamp" type="text">
+  </div>
 </div>
 <div style="text-align: center">
     <button id="clearResult">清除结果</button>
@@ -248,6 +256,8 @@
   let clearResult = document.querySelector('#clearResult')
   let searchBody = document.querySelector('.chang-form-search_body')
   let changeFormSearch = document.querySelector('#changeFormSearch')
+  let appIdPartnerEl = document.querySelector('#appIdPartner')
+  let timestampEl = document.querySelector('#timestamp')
 
   changeFormSearch.addEventListener('blur', function () {
     setTimeout(() => {
@@ -342,18 +352,20 @@
 
   formGroupSubmit.addEventListener('click', function () {
     let result = getFormItems(formValEl)
-    if (selectVersion.value.indexOf('/v2') > -1) {
-      if (result['appId/partner']) {
-        result.appId = result['appId/partner']
-      }
-    } else {
-      if (result['appId/partner']) {
-        result.partner = result['appId/partner']
-      }
+    let appIdPartnerVal = appIdPartnerEl.value
+    let timestampVal = timestampEl.value
+    if (appIdPartnerVal) {
+      return alert('appId/Partner 是必填的字段')
     }
-    delete result['appId/partner']
-    if (!result.timestamp) {
+    if (selectVersion.value.indexOf('/v2') > -1) {
+      result.appId = appIdPartnerVal
+    } else {
+      result.partner = appIdPartnerVal
+    }
+    if (!timestampVal) {
       result.timestamp = Date.now()
+    } else {
+      result.timestamp = timestampVal
     }
 
     let keys = Object.keys(result)
