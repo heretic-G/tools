@@ -90,6 +90,7 @@
   <textarea rows="5" id='url-value'></textarea>
   <div style="text-align: center;margin-top: 30px">
     <button id="url-submit">计算</button>
+    <button id="analyzeUrl">解析参数</button>
   </div>
 </div>
 <div style="text-align: center">
@@ -243,6 +244,22 @@
     return result
   }
 
+  function getAllQueryParams (_url, params = {}, filter = []) {
+    var query = _url || window.location.search.substring(1);
+    if (query) {
+      var vars = query.split("&");
+      for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        if (filter.indexOf(pair[0]) === -1) {
+          params[pair[0]] = decodeURI(pair[1])
+        }
+      }
+      return params;
+    } else {
+      return params;
+    }
+  }
+
 
   let allGroup = 3;
   let formValEl = document.querySelector('.form-group_con')
@@ -258,6 +275,18 @@
   let changeFormSearch = document.querySelector('#changeFormSearch')
   let appIdPartnerEl = document.querySelector('#appIdPartner')
   let timestampEl = document.querySelector('#timestamp')
+  let analyzeUrlBtn = document.querySelector('#analyzeUrl')
+
+  analyzeUrlBtn.addEventListener('click', function () {
+    if (urlValEl.value.indexOf('?') > -1) {
+      var params = {}
+      getAllQueryParams(urlValEl.value.slice(urlValEl.value.indexOf('?') + 1), params, ['sign', 'timestamp'])
+      formValEl.innerHTML = ''
+      for (let key in params) {
+        formValEl.appendChild(createFormGroupItem(key, params[key]))
+      }
+    }
+  })
 
   changeFormSearch.addEventListener('blur', function () {
     setTimeout(() => {
