@@ -282,6 +282,10 @@
       var params = {}
       getAllQueryParams(urlValEl.value.slice(urlValEl.value.indexOf('?') + 1), params, ['sign', 'timestamp'])
       formValEl.innerHTML = ''
+      var temp =  params.appId || params.partner
+      delete params.appId
+      delete params.partner
+      appIdPartnerEl.value = temp
       for (let key in params) {
         formValEl.appendChild(createFormGroupItem(key, params[key]))
       }
