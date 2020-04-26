@@ -6,7 +6,7 @@ function connectParams() {
   var concatStrCon = document.querySelector('#concatStrCon')
   var space = 'à'
   var allStr = '' + merchantId + space + projectId + space + channelSlug
-  var allBaseStr = Base64.encode(allStr)
+  var allBaseStr = Base64.encodeURI(allStr)
   var pEl = document.createElement('p')
   pEl.innerText = allBaseStr
   concatStrCon.appendChild(pEl)
