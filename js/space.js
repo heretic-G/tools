@@ -1,8 +1,8 @@
 
 function connectParams() {
-  var merchantId = document.querySelector('#merchantId')
-  var projectId = document.querySelector('#projectId')
-  var channelSlug = document.querySelector('#channelSlug')
+  var merchantId = document.querySelector('#merchantId').value || ''
+  var projectId = document.querySelector('#projectId').value || ''
+  var channelSlug = document.querySelector('#channelSlug').value || ''
   var concatStrCon = document.querySelector('#concatStrCon')
   var space = 'à'
   var allStr = '' + merchantId + space + projectId + space + channelSlug
