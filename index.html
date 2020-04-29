@@ -92,6 +92,7 @@
   <span style="vertical-align: top">url:</span>
   <textarea rows="5" id='url-value'></textarea>
   <div style="text-align: center;margin-top: 30px">
+    <button id="url-submit-ignore-time">忽略时间戳计算</button>
     <button id="url-submit">计算</button>
     <button id="analyzeUrl">解析参数</button>
   </div>
@@ -268,6 +269,7 @@
   let formValEl = document.querySelector('.form-group_con')
   let formGroupSubmit = document.querySelector('#form-group-submit')
   let urlSubmit = document.querySelector('#url-submit')
+  let urlSubmitIgnoreTime = document.querySelector('#url-submit-ignore-time')
   let urlValEl = document.querySelector('#url-value')
   let selectVersion = document.querySelector('#select-version')
   let appSecret = document.querySelector('#appSecret')
@@ -410,6 +412,20 @@
     let allUrl = `${selectVersion.value + (dataJson[changeFormList.value].url || '')}?${params}`
     appendResultInfo(resultUrlCon, allUrl, hashStr)
 
+  })
+
+  urlSubmitIgnoreTime.addEventListener('click', function () {
+    let urlVal = (urlValEl.value || '').trim()
+    let {_oldUrl, ...result} = getAllQueryParamsByUrl({}, urlVal)
+    if (result.sign) {
+      delete result.sign
+    }
+    result.timestamp = Date.now() + ''
+    let keys = Object.keys(result)
+    keys.sort()
+    let {params, hashStr} = formatParams(result, keys, (appSecret.value || '').trim())
+    let allUrl = `${_oldUrl || (selectVersion.value + (dataJson[changeFormList.value].url || ''))}?${params}`
+    appendResultInfo(resultUrlCon, allUrl, hashStr)
   })
 
   urlSubmit.addEventListener('click', function () {
