@@ -135,6 +135,16 @@
 <script src="data.js"></script>
 <script>
   let searchList = []
+
+  let paramsInit =  getAllQueryParams()
+  if (paramsInit.appId) {
+    let appIdPartnerEl =  document.querySelector('#appIdPartner')
+    appIdPartnerEl.value = paramsInit.appId
+  }
+  if (paramsInit.appSecret) {
+    let appSecretEl =  document.querySelector('#appSecret')
+    appSecretEl.value = paramsInit.appSecret
+  }
   function createFormGroupItem(key = '', value = '') {
     let formGroupDiv = document.createElement("div");
     formGroupDiv.id = `form-group-${ allGroup++ }`
