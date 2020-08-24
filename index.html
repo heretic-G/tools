@@ -402,9 +402,9 @@
     let result = getFormItems(formValEl)
     let appIdPartnerVal = appIdPartnerEl.value
     let timestampVal = timestampEl.value
-    if (!appIdPartnerVal) {
-      return alert('appId/Partner 是必填的字段')
-    }
+    // if (!appIdPartnerVal) {
+    //   return alert('appId/Partner 是必填的字段')
+    // }
     if (selectVersion.value.indexOf('/v2') > -1) {
       result.appId = appIdPartnerVal
     } else {
