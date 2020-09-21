@@ -214,14 +214,18 @@
     let sign = hash.hex()
     decodeFormData += `sign=${sign}`
     return {
-      params: decodeFormData,
-      hashStr
+      params: replaceBody(decodeFormData),
+      hashStr: replaceBody(hashStr)
     }
   }
 
+  function replaceBody(str) {
+    let start = str.indexOf('body=')
+    let end = str.indexOf('&', start + 1)
+    return `${str.slice(0, start)}${str.slice(end + 1)}`
+  }
+
   function appendResultInfo(resultUrlCon, allUrl, hashStr) {
-    allUrl = allUrl.replace('body=&', '')
-    hashStr = hashStr.replace('body=&', '')
     let showInfoEl = document.createElement('div')
     let pEl = document.createElement('p')
     let spanEl = document.createElement('span')
