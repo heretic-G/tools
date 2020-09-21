@@ -142,8 +142,12 @@
 
   let paramsInit =  getAllQueryParams()
   if (paramsInit.appId) {
-    let appIdPartnerEl =  document.querySelector('#appIdPartner')
-    appIdPartnerEl.value = paramsInit.appId
+    let appIdEl =  document.querySelector('#appId')
+    appIdEl.value = paramsInit.appId
+  }
+  if (paramsInit.partner) {
+    let partnerEl =  document.querySelector('#partner')
+    partnerEl.value = paramsInit.appId
   }
   if (paramsInit.appSecret) {
     let appSecretEl =  document.querySelector('#appSecret')
