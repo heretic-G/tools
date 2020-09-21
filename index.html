@@ -117,8 +117,12 @@
     <input id="appSecret" type="text">
   </div>
   <div>
-    <span>appId/partner:</span>
-    <input id="appIdPartner" type="text">
+    <span>appId:</span>
+    <input id="appId" type="text">
+  </div>
+  <div>
+    <span>partner:</span>
+    <input id="partner" type="text">
   </div>
   <div>
     <span>timestamp</span>
@@ -207,6 +211,8 @@
   }
 
   function appendResultInfo(resultUrlCon, allUrl, hashStr) {
+    allUrl = allUrl.replace('body=&', '')
+    hashStr = hashStr.replace('body=&', '')
     let showInfoEl = document.createElement('div')
     let pEl = document.createElement('p')
     let spanEl = document.createElement('span')
@@ -288,7 +294,8 @@
   let clearResult = document.querySelector('#clearResult')
   let searchBody = document.querySelector('.chang-form-search_body')
   let changeFormSearch = document.querySelector('#changeFormSearch')
-  let appIdPartnerEl = document.querySelector('#appIdPartner')
+  let appIdEl = document.querySelector('#appId')
+  let partnerEl = document.querySelector('#partner')
   let timestampEl = document.querySelector('#timestamp')
   let analyzeUrlBtn = document.querySelector('#analyzeUrl')
 
@@ -297,10 +304,10 @@
       var params = {}
       getAllQueryParams(urlValEl.value.slice(urlValEl.value.indexOf('?') + 1), params, ['sign', 'timestamp'])
       formValEl.innerHTML = ''
-      var temp =  params.appId || params.partner
+      appIdEl.value = params.appId
+      partnerEl.value = params.partner
       delete params.appId
       delete params.partner
-      appIdPartnerEl.value = temp
       for (let key in params) {
         formValEl.appendChild(createFormGroupItem(key, params[key]))
       }
@@ -400,15 +407,16 @@
 
   formGroupSubmit.addEventListener('click', function () {
     let result = getFormItems(formValEl)
-    let appIdPartnerVal = appIdPartnerEl.value
+    let appIdVal = appIdEl.value
+    let partnerVal = partnerEl.value
     let timestampVal = timestampEl.value
     // if (!appIdPartnerVal) {
     //   return alert('appId/Partner 是必填的字段')
     // }
-    if (selectVersion.value.indexOf('/v2') > -1) {
-      result.appId = appIdPartnerVal
+    if (appIdVal) {
+      result.appId = appIdVal
     } else {
-      result.partner = appIdPartnerVal
+      result.partner = partnerVal
     }
     if (!timestampVal) {
       result.timestamp = Date.now()
