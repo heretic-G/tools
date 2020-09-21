@@ -156,7 +156,12 @@
   function createFormGroupItem(key = '', value = '') {
     let formGroupDiv = document.createElement("div");
     formGroupDiv.id = `form-group-${ allGroup++ }`
-    formGroupDiv.innerHTML = `<span>key: </span><input ${key ? 'disabled="disabled"' : ''} class="form-key" type="text" value="${key}"><span> value: </span><input class="form-value" type="text" value="${value}">`
+    if (key === 'body') {
+      formGroupDiv.innerHTML = `<span>key: </span><input ${key ? 'disabled="disabled"' : ''} class="form-key" type="text" value="${key}"><span> value: </span><textarea rows="5" class="form-value" value="${value}">`
+    } else {
+      formGroupDiv.innerHTML = `<span>key: </span><input ${key ? 'disabled="disabled"' : ''} class="form-key" type="text" value="${key}"><span> value: </span><input class="form-value" type="text" value="${value}">`
+    }
+
     return formGroupDiv
   }
 
