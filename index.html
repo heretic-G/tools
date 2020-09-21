@@ -221,6 +221,9 @@
 
   function replaceBody(str) {
     let start = str.indexOf('body=')
+    if (start < 0) {
+      return str
+    }
     let end = str.indexOf('&', start + 1)
     return `${str.slice(0, start)}${str.slice(end + 1)}`
   }
