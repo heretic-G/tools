@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p>只是个很基础的demo 打开控制台下面会展示 devTool is open!!</p>
+    <span></span>
+<script>
+    const spanEl = document.querySelector('span')
+    function openDevtool () {
+        const ERROR_INFO = 'openDevTool'
+        let error = new Error(ERROR_INFO)
+        Object.defineProperty(error, 'stack', {
+            get() {
+                spanEl.innerText = 'devTool is open!!'
+                return ERROR_INFO
+            }
+        })
+        setInterval(() => {
+            spanEl.innerText = ''
+            console.log(error)
+        }, 200)
+    }
+    openDevtool()
+</script>
+</body>
+</html>

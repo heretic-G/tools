@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body, canvas {
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+        canvas {
+            box-sizing: border-box;
+            border: 2px solid #000;
+        }
+    </style>
+</head>
+<body>
+<script>
+    const RATE = window.devicePixelRatio || 1
+    let canvasEl = initCanvasAndAttr()
+    let ctx = canvasEl.getContext('2d',)
+
+    let start = false
+    let point = []
+    let line = []
+    let active = 1
+
+    ctx.globalAlpha = 0.9
+    ctx.lineJoin = 'round'
+    ctx.lineWidth = 1 * RATE
+
+    requestAnimationFrame(draw)
+
+    function drawLine () {
+        let length = point.length
+        if (length > active + 2) {
+            ctx.beginPath()
+            while (length - active > 3) {
+                let x1 = (point[active][0] + point[active + 1][0]) / 2
+                let y1 = (point[active][1] + point[active + 1][1]) / 2
+                let x = (point[active + 1][0] + point[active + 2][0]) / 2
+                let y = (point[active + 1][1] + point[active + 2][1]) / 2
+                // ctx.moveTo(point[active][0], point[active][1])
+                ctx.moveTo(x1, y1)
+                ctx.quadraticCurveTo(point[active + 1][0], point[active + 1][1],
+                    // point[active + 2][0], point[active + 2][1])
+                    x, y)
+                active += 1
+            }
+            ctx.stroke()
+            ctx.closePath()
+        }
+    }
+    function draw () {
+        drawLine()
+        requestAnimationFrame(draw)
+    }
+
+    window.addEventListener('resize', function () {
+        setCanvasHeightAndWidth(canvasEl)
+    })
+
+    canvasEl.addEventListener('mousemove', function (e) {
+        if (start) {
+            point.push([e.offsetX * RATE, e.offsetY * RATE])
+        }
+    })
+    canvasEl.addEventListener('mousedown', function (e) {
+        if (start === false) {
+            start = true
+            point.push([e.offsetX * RATE, e.offsetY * RATE])
+        }
+    })
+    canvasEl.addEventListener('mouseup', function () {
+        if (start === true) {
+            start = false
+            line.push(point)
+            point = []
+            active = 1
+        }
+    })
+    canvasEl.addEventListener("mouseout", function () {
+        if (start === true) {
+            start = false
+            line.push(point)
+            point = []
+            active = 1
+        }
+    })
+
+    function initCanvasAndAttr () {
+        let canvasEl = document.createElement('canvas')
+        document.body.appendChild(canvasEl)
+
+        setCanvasHeightAndWidth(canvasEl)
+
+        return canvasEl
+    }
+
+    function setCanvasHeightAndWidth (canvasEl) {
+        let width = document.body.clientWidth
+        let height = document.body.clientHeight
+        canvasEl.setAttribute('height', height * RATE)
+        canvasEl.setAttribute('width', width * RATE)
+    }
+
+</script>
+</body>
+</html>
