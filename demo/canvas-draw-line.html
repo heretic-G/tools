@@ -9,6 +9,7 @@
             height: 100%;
             width: 100%;
         }
+
         canvas {
             margin-left: 200px;
             box-sizing: border-box;
@@ -69,7 +70,7 @@
     const RATE = window.devicePixelRatio || 1
     let canvasEl = initCanvasAndAttr()
     let ctx = canvasEl.getContext('2d')
-    let radioEl = document.querySelector('input[name=type]')
+    let radioParentEl = document.querySelector('.tool')
     let radioType = 'type-twice-qua'
 
     let start = false
@@ -79,7 +80,7 @@
 
     ctx.globalAlpha = 0.9
     ctx.lineJoin = 'round'
-    ctx.lineWidth = 1 * RATE
+    ctx.lineWidth = 2 * RATE
 
     requestAnimationFrame(draw)
 
@@ -156,7 +157,7 @@
         setCanvasHeightAndWidth(canvasEl)
     })
 
-    radioEl.parentNode.parentNode.parentNode.addEventListener('change', function (e) {
+    radioParentEl.addEventListener('change', function (e) {
         radioType = e.target.value
     })
 
