@@ -10,16 +10,67 @@
             width: 100%;
         }
         canvas {
+            margin-left: 200px;
             box-sizing: border-box;
             border: 2px solid #000;
+        }
+
+        .tool {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 200px;
+        }
+
+        .tool > ul {
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .tool > ul > li {
+            padding: 10px 0;
+        }
+
+        .tool li label {
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
+    <div class="tool">
+        <ul>
+            <li>
+                <label for="type-none">
+                    <input id="type-none" value="none" type="radio" name="type">
+                    <span>无优化</span>
+                </label>
+            </li>
+            <li>
+                <label for="type-qua">
+                    <input id="type-qua"
+                           value="type-qua"
+                           type="radio" name="type">
+                    <span>二次贝塞</span>
+                </label>
+            </li>
+            <li>
+                <label for="type-twice-qua">
+                    <input checked
+                           id="type-twice-qua"
+                           value="type-twice-qua"
+                           type="radio" name="type">
+                    <span>优化二次贝塞</span>
+                </label>
+            </li>
+        </ul>
+    </div>
 <script>
     const RATE = window.devicePixelRatio || 1
     let canvasEl = initCanvasAndAttr()
-    let ctx = canvasEl.getContext('2d',)
+    let ctx = canvasEl.getContext('2d')
+    let radioEl = document.querySelector('input[name=type]')
+    let radioType = 'type-twice-qua'
 
     let start = false
     let point = []
@@ -32,7 +83,7 @@
 
     requestAnimationFrame(draw)
 
-    function drawLine () {
+    function drawTwiceQuadraticCurveLine () {
         let length = point.length
         if (length > active + 2) {
             ctx.beginPath()
@@ -52,13 +103,61 @@
             ctx.closePath()
         }
     }
+
+    function drawLine () {
+        let length = point.length
+        if (length > active + 2) {
+            ctx.beginPath()
+            while (length - active > 3) {
+                ctx.moveTo(point[active][0], point[active][1])
+                ctx.lineTo(point[active + 1][0], point[active + 1][1])
+                active += 1
+            }
+            ctx.stroke()
+            ctx.closePath()
+        }
+    }
+
+    function drawQuadraticCurveLine () {
+        let length = point.length
+        if (length > active + 2) {
+            ctx.beginPath()
+            while (length - active > 2) {
+                ctx.moveTo(point[active][0], point[active][1])
+                ctx.quadraticCurveTo(point[active + 1][0], point[active + 1][1],
+                    point[active + 2][0], point[active + 2][1])
+                active += 2
+            }
+            ctx.stroke()
+            ctx.closePath()
+        }
+    }
+
     function draw () {
-        drawLine()
-        requestAnimationFrame(draw)
+        switch (radioType) {
+            case 'none':
+                drawLine()
+                break
+            case 'type-qua':
+                drawQuadraticCurveLine()
+                break
+            case 'type-twice-qua':
+                drawTwiceQuadraticCurveLine()
+                break
+            default:
+                drawTwiceQuadraticCurveLine()
+        }
+        if (start === true) {
+            requestAnimationFrame(draw)
+        }
     }
 
     window.addEventListener('resize', function () {
         setCanvasHeightAndWidth(canvasEl)
+    })
+
+    radioEl.parentNode.parentNode.parentNode.addEventListener('change', function (e) {
+        radioType = e.target.value
     })
 
     canvasEl.addEventListener('mousemove', function (e) {
@@ -69,6 +168,7 @@
     canvasEl.addEventListener('mousedown', function (e) {
         if (start === false) {
             start = true
+            requestAnimationFrame(draw)
             point.push([e.offsetX * RATE, e.offsetY * RATE])
         }
     })
@@ -92,9 +192,7 @@
     function initCanvasAndAttr () {
         let canvasEl = document.createElement('canvas')
         document.body.appendChild(canvasEl)
-
         setCanvasHeightAndWidth(canvasEl)
-
         return canvasEl
     }
 
