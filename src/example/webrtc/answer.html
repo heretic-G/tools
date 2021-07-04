@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>answer</title>
+</head>
+<body>
+<div id="videoCon"></div>
+<div id="otherVideoCon"></div>
+<p>你的名字：<span id="name"></span></p>
+<div>
+<!--    <button id="createOffer">创建offer</button>-->
+    <button id="openVideo">打开摄像头</button>
+    <br />
+    <input type="text" id="offer">
+    <button id="addOffer">增加offer</button>
+    <br />
+<!--    <input type="text" id="answer">-->
+<!--    <button id="addAnswer">增加answer</button>-->
+<!--    <br />-->
+    <input type="text" id="candidate">
+    <button id="addCandidate">增加candidate</button>
+    <br />
+    <input type="text" id="data">
+    <button id="sendData">发送数据</button>
+</div>
+
+<script>
+    let videoCon = document.querySelector('#videoCon')
+    let otherVideoCon = document.querySelector('#otherVideoCon')
+    // let createOffer = document.querySelector('#createOffer')
+    let openVideo = document.querySelector('#openVideo')
+    let offer = document.querySelector('#offer')
+    let addOffer = document.querySelector('#addOffer')
+    // let answer = document.querySelector('#answer')
+    // let addAnswer = document.querySelector('#addAnswer')
+
+    let candidate = document.querySelector('#candidate')
+    let candidateBtn = document.querySelector('#addCandidate')
+    let data = document.querySelector('#data')
+    let dataBtn = document.querySelector('#sendData')
+
+    let name = document.querySelector('#name')
+    const nameStr = Math.random().toString(24).replace(/\d./g, '')
+    name.innerText = nameStr
+
+    let init = false
+    let videoPlay = false
+    let streamSrc
+    const ice = {
+        'iceServers': [
+            {'url': 'stun:stun.l.google.com:19302'},   // google公共测试服务器
+        ]
+    };
+
+    let rtc = new RTCPeerConnection(ice)
+    rtc.onicecandidate = function (event) {
+        if (event.candidate){
+            console.log('candidate')
+            console.log(JSON.stringify(event.candidate.toJSON()))
+        }
+    }
+    dataChannel = rtc.createDataChannel(nameStr)
+    dataChannel.onmessage = function(event) {
+        console.log(`${event.target.label}: ${event.data}`);
+    }
+
+    rtc.ontrack = function (event) {
+        let video = document.createElement('video')
+        video.height = 150
+        video.width = 150
+        otherVideoCon.appendChild(video)
+        video.srcObject = event.streams[0]
+        video.onloadedmetadata = function(e) {
+            video.play();
+        }
+        console.log('ontrack', event)
+    }
+
+    rtc.ondatachannel = (data) => {
+        otherDataChannel = data.channel
+        data.channel.onmessage = (event) => {
+            console.log(`${event.target.label}: ${event.data}`);
+        }
+    }
+
+    // createOffer.addEventListener('click', function () {
+    //     if (!init) {
+    //         init = true
+    //         if (videoPlay) {
+    //             streamSrc.getTracks().forEach(function(track){
+    //                 rtc.addTrack(track, streamSrc);
+    //             });
+    //         }
+    //         rtc.createOffer().then(offer => {
+    //             rtc.setLocalDescription(offer)
+    //             console.log('请复制下面offer信息到另一方answer输入框内')
+    //             console.log(JSON.stringify(offer))
+    //         })
+    //     }
+    // })
+
+    openVideo.addEventListener('click', function () {
+        navigator.mediaDevices.getUserMedia({video: true}).then(stream => {
+            videoPlay = true
+            let video = document.createElement('video')
+            video.height = 300
+            video.width = 300
+            videoCon.appendChild(video)
+            video.srcObject = stream
+            video.onloadedmetadata = function(e) {
+                video.play();
+            }
+            if (init) {
+                stream.getTracks().forEach(function(track){
+                    rtc.addTrack(track, stream);
+                });
+            } else {
+                streamSrc = stream
+            }
+
+        })
+    })
+
+    addOffer.addEventListener('click', function () {
+        if (offer.value) {
+            let rtcSessionDesc = new RTCSessionDescription(JSON.parse(offer.value))
+            rtc.setRemoteDescription(rtcSessionDesc).then(() => {
+                rtc.createAnswer().then(answer => {
+                    rtc.setLocalDescription(answer)
+                    console.log('请复制下面answer信息到另一方offer输入框内')
+                    console.log(JSON.stringify(answer))
+                })
+            })
+            offer.value = ''
+        }
+    })
+
+    // addAnswer.addEventListener('click', function () {
+    //     if (answer.value) {
+    //         rtc.setRemoteDescription(new RTCSessionDescription(JSON.parse(answer.value))).catch(err => {
+    //             console.dir(err)
+    //         })
+    //         answer.value = ''
+    //     }
+    // })
+
+    candidateBtn.addEventListener('click', function () {
+        if (candidate.value) {
+            rtc.addIceCandidate(JSON.parse(candidate.value))
+            candidate.value = ''
+        }
+    })
+
+    dataBtn.addEventListener('click', function () {
+        if (data.value) {
+            dataChannel.send(data.value)
+            data.value = ''
+        }
+    })
+</script>
+</body>
+</html>
