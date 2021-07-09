@@ -1,0 +1,3 @@
+- [ ] boolean在泛型中会做分发
+- [ ] type Equal<X, Y> = <T>() => T extends X ? 1 : 2 extends <T>() => T extends Y ? 1 : 2 ? true : false 为什么可以实现全等
+- [ ] 
