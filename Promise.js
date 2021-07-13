@@ -1,9 +1,3 @@
-啊啊啊啊啊~~~~~~ 终于过测了
-哎 虽然大多数都是按照规范实现的(感觉就是在抄逻辑 但是还是有很多细节加深了理解)
-
-所以写一遍还是有提高的 就是这个用例真的不好定位错误地方2.3.3.3 里面数组嵌套后 log信息不好对应会测试用例和逻辑 真的不好找是哪块暴露的问题...属实找了一阵...
-
-```javascript
 function MyPromise (executor) {
     if (typeof executor !== 'function') {
         // throw new Error('Promise resolver 1 is not a function')
@@ -215,8 +209,3 @@ MyPromise.deferred = function () {
 
 module.exports = MyPromise
 
-
-
-
-
-```
