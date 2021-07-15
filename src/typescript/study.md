@@ -8,3 +8,5 @@ Distributive
 
 generic type
 
+ThisType
+
