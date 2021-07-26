@@ -49,6 +49,13 @@ Touch Event
 
 
 
+Touch Event
+    
+    touchstart
+    touchend    部分情况
+    touchmove
+    touchcancel	
+
 scroll 规范中没有定义他的Event归属 其实算是wheel的后续操作
 
 
