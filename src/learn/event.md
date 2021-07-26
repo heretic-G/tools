@@ -1,7 +1,9 @@
-event.preventDefault 不能取消的没有固定哪一个类 主要是在规范中有没有定义Default Action 还有即使是定义了Default Action 
-那在实际中可能也会在不同的触发时间存在或不存在默认行为 所以可以依赖event.cancelable 来处理Default Action 
+[补充] 如果passive设置为true 那其实preventDefault 就会无效 因为 passive 为true 会导致初始化的时候cancelable为false
 
-如果只是简单列举下 具体可以去 https://w3c.github.io/uievents/#events-wheelevents 自己看看
+event.preventDefault 不能取消的没有固定哪一个类 主要是在规范中有没有定义Default Action 还有即使是定义了Default Action
+那在实际中可能也会在不同的触发时间存在或不存在默认行为 所以可以依赖event.cancelable 来处理Default Action
+
+如果只是简单列举下 具体可以去 https://w3c.github.io/uievents/#events-wheelevents 自己看看 当然不是全部event这里都有我就不都粘这里了
 
 UI Event
 
@@ -38,6 +40,15 @@ Composition Event
     compositionupdate
     compositionend
 
+Touch Event
+
+    touchstart
+    touchend    部分情况
+    touchmove
+    touchcancel	
+
+
+
 scroll 规范中没有定义他的Event归属 其实算是wheel的后续操作
 
 
@@ -62,8 +73,6 @@ composed flag   =>  用来指示该事件是否可以从 Shadow DOM 传递到一
 initialized flag    没有理解
 
 dispatch flag
-
-
 
 
 
