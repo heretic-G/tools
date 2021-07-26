@@ -26,10 +26,14 @@ function Fibonacci (n, ac1 = 1, ac2 = 1) {
 
 function Fibonacci (n) {
     let arr = [0, 1]
-    for (let i = 2; i < n + 1; i++) {
-        arr[i] = arr[i - 1] + arr[i - 2]
+    for (let i = 2; i < Infinity + 1; i++) {
+        let iSum = arr[i - 1] + arr[i - 2]
+        if (iSum >= n) {
+            break
+        }
+        arr[i] = iSum
     }
-    return arr[n]
+    return arr
 }
 // 空间优化
 function Fibonacci (n) {
