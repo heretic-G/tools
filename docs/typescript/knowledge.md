@@ -37,6 +37,14 @@
 // 今天钻的一个牛角尖 一个数组的typeof 类型是number[] 所以在 1是可以符合
 
 
+// `${infer F}${infer L}` 字符串匹配的时候什么时候会失败呢 其实只要是连续2个"" 就是失败 
+// 举个例子 
+    type str<S extends strring> = S extends `${infer F}-${infer M}${infer L}` ? 1 : 0
+// 这种匹配最低需要个什么样子的str呢 其实'-b' 就可以 这时候F和L都是'' 但是只要不连续 就不会认为是匹配失败
+
+
+// as 我目前理解 分成两种 第一种是基于in前的Key 那这是时候可以过滤Key 如果不是 会导致后面的值对应的val是in之后合并的val
+
 ```
 
 

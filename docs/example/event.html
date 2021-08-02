@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input style="height: 100px;background-color: rebeccapurple" />
+    <script>
+
+        function createPromise () {
+            return new Promise((resolve) => {
+
+                resolve(Promise.resolve().then(res => {
+                    console.log(11)
+                    return createPromise()
+                }))
+            })
+        }
+        let div = document.querySelector('input')
+        document.querySelector('body').addEventListener('mousedown', function (e) {
+            console.log('body mousedown down')
+            // e.preventDefault()
+            // createPromise()
+        }, true)
+        document.querySelector('body').addEventListener('mousedown', function (e) {
+            console.log('body mousedown up')
+            // e.preventDefault()
+            // createPromise()
+        }, false)
+        div.addEventListener('mousedown', function (e) {
+            console.log('mousedown')
+            // e.preventDefault()
+        })
+        div.addEventListener('focus', function (e) {
+            console.log('focus')
+            // e.preventDefault()
+        })
+        div.addEventListener('click', function () {
+            console.log('click')
+        })
+
+        div.addEventListener('dblclick', function (e) {
+            console.log('dblclick')
+            e.preventDefault()
+        })
+        div.addEventListener('keydown', function (e) {
+            console.log('keydown')
+            e.preventDefault()
+            e.stopPropagation()
+            e.stopImmediatePropagation()
+        })
+
+        div.addEventListener('input', function (e) {
+            console.log('input')
+        })
+
+    </script>
+</body>
+</html>

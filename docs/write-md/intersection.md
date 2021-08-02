@@ -1,5 +1,5 @@
 
-
+这里有个可以优化的就是includes 需要n 这里可以建立map 然后使用map在空间会多 但是时间能降下来很多
 
 ```javascript
 

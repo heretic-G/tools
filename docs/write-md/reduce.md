@@ -1,3 +1,8 @@
+
+比想象中的reduce逻辑复杂很多 所以这里有个很重要的就是其实array的api很多时候并不在乎他是不是一个array
+
+所以需要很多判断才能够在去调用
+
 ```javascript
 
 Array.prototype.reduce = function reduce (fun, init) {
