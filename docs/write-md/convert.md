@@ -175,8 +175,10 @@ function getFullNum(num){
     let str = '' + num
     if (/e-/i.test(str)) {
         let fixed = ('' + num).match(/\d+$/)[0]
-        return `0.${'0'.repeat(fixed - 1)}${str.slice(0, str.indexOf(`e-${fixed}`)).replace('.', '')}`
+        let index = str.indexOf(`e-${fixed}`)
+        return `0.${'0'.repeat(fixed - 1)}${str.slice(0, index).replace('.', '')}`
     }
+    
     if (/e+/i.test(str)) {
         let fixed = ('' + num).match(/\d+$/)[0]
         let int = str.slice(0, str.indexOf(`e+${fixed}`)).replace('.', '')
