@@ -62,7 +62,6 @@
   * [onerror](learn/onerror.md)
   * [promise](learn/promise.md)
   * [reference-record](learn/referenceRecord.md)
-  * [promise](learn/promise.md)
-  * [promise](learn/promise.md)
+  * [autoplay](learn/autoplay.md)
     
 * [demo](example/README.md)
