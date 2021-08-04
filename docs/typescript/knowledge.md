@@ -45,6 +45,32 @@
 
 // as 我目前理解 分成两种 第一种是基于in前的Key 那这是时候可以过滤Key 如果不是 会导致后面的值对应的val是in之后合并的val
 
+
+// extends在联合类型naked 泛型时会做类型分发 这时候其实是 语义上的泛型 而不是语法上的泛型 
+// 举个例子 
+type A<T> = T extends infer U ? U : never;
+type B<T> = A<T> extends 1 ? "X" : "Y";
+type C = B<1 | 2>; // "Y"
+// 可以看到A返回一个泛型U 但是这个泛型在B中没有当做泛型 然后做分发 而是当做一个联合类型 然后直接判断是不是extends
+
+// 还有一个情况特殊记录 这个情况可能是因为bug导致的 具体时效不清晰 而且我不确定我列举了全部过程
+type IsUnion<T> =
+    [T] extends [infer R]
+    ? T extends any 
+        ? T extends never 
+            ? never 
+            : Exclude<R, T> extends T 
+                ? 7 
+                : 8 
+        : 9
+    : 10
+type test = IsUnion<'a' | 'b' | 'c' | 'd'> // 2
+
+// 在T变为元组后 如果后面是个元组那这时候需要 T extends any 然后在true分支中进行 T extends never 在false 里面就可以继续使用分发了
+// 原因不清楚 就是能用... never这一步也可以使用需要后面使用的内置函数 如果不用 那其实any后就已经可以分发了
+
+
+
 ```
 
 
