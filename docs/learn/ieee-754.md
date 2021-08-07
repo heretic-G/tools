@@ -26,3 +26,18 @@ Grisu3这个算法 其实还有Dragon4 这个是ecma规范中说道的 但是这
 所以在回到第一个问题 0.1 其实是一个丢失精度的但是他丢失的就是一个很小的数 所以优化展示回到了0.1 然后0.2也是一个很小的数 
 但是优化展示回到了0.2 这俩加一块 误差变大了...然后0.3基于算法的逻辑没有得到一个更短的所以直接展示了全部(这个也是我猜的 没有验证 所以错误的话...轻喷)
 
+
+
+补偿一个计算逻辑 
+浮点数计算	
+    
+    对阶 
+    尾数求和
+    规格化 
+    舍入和溢出判断
+
+[v8代码](https://github.com/v8/v8/blob/dc712da548c7fb433caed56af9a021d964952728/src/numbers/fast-dtoa.cc)
+
+[简单的中文介绍](https://bitjoy.net/2015/08/30/introduction-to-floating-point-numbers-and-grisu-algorithm/)
+
+[Grisu算法](https://www.cs.tufts.edu/~nr/cs257/archive/florian-loitsch/printf.pdf)
