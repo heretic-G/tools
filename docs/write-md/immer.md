@@ -51,3 +51,94 @@ function immer (obj) {
     }
 }
 ```
+
+proxy 的逻辑的 暂时未完成 裂开 
+
+```javascript
+
+function isObject (data) {
+    if (typeof data === 'object' && data !== null) {
+        return true
+    }
+}
+
+const has = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+
+function createProxy (parent, base) {
+    let data = {
+        base: base,
+        parent: parent,
+        copy: undefined,
+        drafts: {}
+    }
+
+    return Proxy.revocable(data, {
+        get(obj, prop) {
+            if (obj.copy) {
+                let value = obj.copy[prop]
+                if (value && isObject(value)) {
+                    let proxy = createProxy(obj, value)
+                    obj.drafts[prop] = proxy.proxy
+                }
+                return obj.drafts[prop]
+            }
+            if (obj.drafts[prop]) {
+                return obj.drafts[prop]
+            }
+            let value = obj.base[prop]
+            if (value && isObject(value)) {
+                let proxy = createProxy(obj, value)
+                obj.drafts[prop] = proxy.proxy
+            }
+            return obj.drafts[prop]
+        },
+        set(obj, prop, value) {
+            if (!obj.copy) { createCopy(obj)}
+            obj.copy[prop] = value
+        },
+        ownKeys(state) {
+            return Reflect.ownKeys(state.copy ?? state.base)
+        },
+        getOwnPropertyDescriptor(state, prop) {
+            const owner = state.copy ??
+            has(state.drafts, prop) ? state.drafts : state.base
+            return Reflect.getOwnPropertyDescriptor(owner, prop)
+        }
+    })
+}
+
+function createCopy (data) {
+    if (!data.copy) {
+        data.copy = Array.isArray(data.base) ? [...data.base] : {...data.base}
+    }
+    Object.assign(data.copy, data.drafts)
+    if (data.parent) {
+        createCopy(data.parent)
+    }
+}
+
+function produce (state, producer) {
+    let proxy = createProxy(undefined, state)
+    producer(proxy.proxy)
+    console.log(getResult(proxy.proxy))
+}
+
+function getResult (proxy) {
+    let key = Object.keys(proxy)
+    let result = Array.isArray(proxy.copy ?? proxy.base) ? [] : {}
+    if (key.length === 0) {
+        console.log(proxy, key)
+    }
+
+    key.forEach((curr) => {
+        result[curr] = getResult(proxy[curr])
+    })
+    return result
+}
+
+produce({a: {b: {d: '大大'}}}, function (proxy) {
+    proxy.a.b.d = '123123123'
+})
+
+
+```
