@@ -20,6 +20,8 @@
   * [时间转换](write-md/timeBitmapToRanges.md)
   * [trim](write-md/trim.md)
   * [使用addFun去实现累加](write-md/use-addFun-to-sum.md)
+  * [groupBy](write-md/groupBy.md)
+  * [链式过滤数据](write-md/find-chainngCall.md)
     
 
 * [typescript](typescript/README.md)
