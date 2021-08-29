@@ -65,5 +65,7 @@
   * [promise](learn/promise.md)
   * [reference-record](learn/referenceRecord.md)
   * [autoplay](learn/autoplay.md)
+  * [IEEE-754](learn/ieee-754.md)
+  * [HSTS+cors](learn/HSTS+cors.md)
     
 * [demo](example/README.md)
