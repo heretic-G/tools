@@ -68,5 +68,7 @@
   * [IEEE-754](learn/ieee-754.md)
   * [HSTS+cors](learn/HSTS+cors.md)
   * [EnvironmentRecord-ExecutionContexts](learn/EnvironmentRecord-ExecutionContexts.md)
+  * [setTimeout](learn/setTImeout.md)
+  * [function-method-arrow](learn/function-method-arrow.md)
     
 * [demo](example/README.md)
