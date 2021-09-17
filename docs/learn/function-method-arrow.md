@@ -12,6 +12,8 @@
     [[Prototype]] 2种 一种是Function.prototype 如果是constructor并且是继承的就是用superclassRef
     无prototype属性 无[[ConstructorKind]]
     有arguments
+    能当做 Generator
+    有一个特殊是使用get 和set会导致变为属性的get和set方法
 
 函数
     [[HomerObject]] undefined
@@ -22,6 +24,7 @@
     [[Prototype]] Function.prototype
     有prototype属性 有[[ConstructorKind]] (这里和另外两方的差异主要是 这里调用了`MakeConstructor`)
     有arguments
+    能当做 Generator
 
 箭头函数
     [[HomerObject]] undefined
@@ -31,6 +34,7 @@
     [[Prototype]] Function.prototype
     无prototype属性 无[[ConstructorKind]]
     无arguments 引用外部(具体arguments 可以看function的初始化的流程看看怎么创建的)
+    不能当做 Generator
 
 
 
