@@ -1,7 +1,7 @@
 
 其实这俩主要是生存周期的区别 都是同域
 
-localStorage 是永久
+localStorage 是长期(具体时间按照实现方去定义)
 
 sessionStorage的话 绝大多数都是同tabs 也就是一个tab打开是个新的 
 但是如果存在opener这时候会复制opener的sessionStorage
