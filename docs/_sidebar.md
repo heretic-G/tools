@@ -71,5 +71,6 @@
   * [EnvironmentRecord-ExecutionContexts](learn/EnvironmentRecord-ExecutionContexts.md)
   * [setTimeout](learn/setTImeout.md)
   * [function-method-arrow](learn/function-method-arrow.md)
+  * [sessionStorage-localStorage](learn/sessionStorage-localStorage.md)
     
 * [demo](example/README.md)
